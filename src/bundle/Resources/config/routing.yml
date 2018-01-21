@@ -1,0 +1,24 @@
+edgar.ezwebpush.profile:
+    path: /webpush/profile
+    defaults:
+        _controller: 'EdgarEzWebPushBundle:WebPush:profile'
+
+edgar.ezwebpush.sw:
+    path: /sw
+    defaults:
+        _controller: 'EdgarEzWebPushBundle:WebPush:sw'
+
+edgar.ezwebpush.register:
+    path: /webpush/register
+    defaults:
+        _controller: 'EdgarEzWebPushBundle:WebPush:register'
+
+edgar.ezwebpush.unregister:
+    path: /webpush/unregister
+    defaults:
+        _controller: 'EdgarEzWebPushBundle:WebPush:unregister'
+
+edgar.ezwebpush.test:
+    path: /webpush/test
+    defaults:
+        _controller: 'EdgarEzWebPushBundle:WebPush:test'

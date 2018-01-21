@@ -1,0 +1,14 @@
+services:
+    Edgar\EzWebPush\Component\FooterTwigComponent:
+        parent: EzSystems\EzPlatformAdminUi\Component\TwigComponent
+        arguments:
+            $template: 'EdgarEzWebPushBundle:webpush/component:webpush_footer.html.twig'
+        tags:
+            - { name: ezplatform.admin_ui.component, group: 'script-body' }
+
+    Edgar\EzWebPush\Component\HeadTwigComponent:
+        parent: EzSystems\EzPlatformAdminUi\Component\TwigComponent
+        arguments:
+            $template: 'EdgarEzWebPushBundle:webpush/component:webpush_head.html.twig'
+        tags:
+            - { name: ezplatform.admin_ui.component, group: 'stylesheet-head' }

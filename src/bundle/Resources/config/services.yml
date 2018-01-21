@@ -1,0 +1,14 @@
+imports:
+    - { resource: controllers.yml }
+    - { resource: components.yml }
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Edgar\EzWebPushBundle\EventListener\ProfileConfigureMenuListener:
+        public: true
+        tags:
+          - { name: kernel.event_listener, event: edgar_ezuiprofile.menu_configure.profile_sidebar_left, method: onMenuConfigure }
