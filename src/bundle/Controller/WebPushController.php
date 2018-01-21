@@ -41,6 +41,7 @@ class WebPushController extends Controller
     public function profileAction(): Response
     {
         return $this->render('@EdgarEzWebPush/profile/webpush.html.twig', [
+            'vapid_public_key' => $this->container->getParameter('edgar_ez_web_push.vapid_public_key'),
         ]);
     }
 
@@ -60,13 +61,21 @@ class WebPushController extends Controller
         $user = $this->tokenStorage->getToken()->getUser();
         $apiUser = $user->getAPIUser();
 
-        $content = json_decode($request->getContent());
-        if (!isset($content->endpoint)) {
+        $content = json_decode($request->getContent(), true);
+        if (JSON_ERROR_NONE !== json_last_error()) {
             $response = new JsonResponse(['success' => false]);
             return $response;
         }
 
-        if (!$this->webPushRepository->save($apiUser->id, $content->endpoint)) {
+        if (!isset($content['endpoint'])
+            || !isset($content['keys']['auth'])
+            || !isset($content['keys']['p256dh'])
+        ) {
+            $response = new JsonResponse(['success' => false]);
+            return $response;
+        }
+
+        if (!$this->webPushRepository->save($apiUser->id, $content['endpoint'], $content['keys']['auth'], $content['keys']['p256dh'])) {
             $response = new JsonResponse(['success' => false]);
             return $response;
         }
@@ -100,7 +109,6 @@ class WebPushController extends Controller
     {
         $webPushEndpoints = $this->webPushRepository->findAll();
 
-
         if (!$webPushEndpoints || count($webPushEndpoints) == 0) {
             return new RedirectResponse($this->router->generate('edgar.ezuibookmark.profile'));
         }
@@ -127,12 +135,13 @@ class WebPushController extends Controller
 
         foreach ($webPushEndpoints as $webPushEndpoint) {
             try {
-                $webPush->sendNotification(
+                $res = $webPush->sendNotification(
                     $webPushEndpoint->getEndpoint(),
-                    $notification
+                    $notification,
+                    $webPushEndpoint->getPublicKey(),
+                    $webPushEndpoint->getAuthToken()
                 );
             } catch (\ErrorException $e) {
-                var_dump($e->getMessage());exit();
             }
         }
 

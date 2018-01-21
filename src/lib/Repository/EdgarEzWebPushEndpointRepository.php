@@ -8,12 +8,14 @@ use Edgar\EzWebPushBundle\Entity\EdgarEzWebPushEndpoint;
 
 class EdgarEzWebPushEndpointRepository extends EntityRepository
 {
-    public function save(int $userId, string $endpoint): bool
+    public function save(int $userId, string $endpoint, string $authToken, string $publicKey): bool
     {
         try {
             $webPushEndpoint = new EdgarEzWebPushEndpoint();
             $webPushEndpoint->setUserId($userId);
             $webPushEndpoint->setEndpoint($endpoint);
+            $webPushEndpoint->setAuthToken($authToken);
+            $webPushEndpoint->setPublicKey($publicKey);
             $this->getEntityManager()->persist($webPushEndpoint);
             $this->getEntityManager()->flush();
             return true;

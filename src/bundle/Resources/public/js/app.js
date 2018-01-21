@@ -39,7 +39,10 @@ if ('serviceWorker' in navigator) {
 // endpoint to the server.
 function subscribe() {
     navigator.serviceWorker.ready.then(function(registration) {
-        return registration.pushManager.subscribe({ userVisibleOnly: true });
+        return registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: encodeServerKey(subscriptionButton.getAttribute('data-vapidpublickey'))
+        });
     }).then(function(subscription) {
         console.log('Subscribed', subscription.endpoint);
         return fetch('/admin/webpush/register', {
@@ -51,13 +54,23 @@ function subscribe() {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({
-                endpoint: subscription.endpoint
-            })
+            body: JSON.stringify(subscription)
         });
     }).then(setUnsubscribeButton);
 }
 
+function encodeServerKey(serverKey) {
+    var padding = '='.repeat((4 - serverKey.length % 4) % 4);
+    var base64 = (serverKey + padding).replace(/\-/g, '+').replace(/_/g, '/');
+
+    var rawData = window.atob(base64);
+    var outputArray = new Uint8Array(rawData.length);
+
+    for (var i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
 
 // Get existing subscription from service worker, unsubscribe
 // (`subscription.unsubscribe()`) and unregister it in the server with

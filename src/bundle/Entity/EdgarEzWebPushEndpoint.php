@@ -28,10 +28,19 @@ class EdgarEzWebPushEndpoint
      */
     private $endpoint;
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="public_key", type="text", nullable=false)
+     */
+    private $publicKey;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="auth_token", type="string",length=255, nullable=false)
+     */
+    private $authToken;
 
     /**
      * @return int
@@ -46,10 +55,14 @@ class EdgarEzWebPushEndpoint
         return $this->endpoint;
     }
 
-    public function setId(int $id): self
+    public function getPublicKey(): string
     {
-        $this->id = $id;
-        return $this;
+        return $this->publicKey;
+    }
+
+    public function getAuthToken(): string
+    {
+        return $this->authToken;
     }
 
     /**
@@ -68,4 +81,15 @@ class EdgarEzWebPushEndpoint
         return $this;
     }
 
+    public function setPublicKey(string $publicKey): self
+    {
+        $this->publicKey = $publicKey;
+        return $this;
+    }
+
+    public function setAuthToken(string $authToken): self
+    {
+        $this->authToken = $authToken;
+        return $this;
+    }
 }
