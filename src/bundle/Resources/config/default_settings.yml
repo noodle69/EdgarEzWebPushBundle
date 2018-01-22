@@ -1,8 +1,4 @@
 parameters:
-    edgar_ez_web_push.defaut.manifest.name: ~
-    edgar_ez_web_push.defaut.manifest.short_name: ~
-    edgar_ez_web_push.defaut.manifest.api_key: ~
-    edgar_ez_web_push.defaut.manifest.gcm_sender_id: ~
-
+    edgar_ez_web_push.defaut.subject: ~
     edgar_ez_web_push.defaut.vapid_public_key: ~
     edgar_ez_web_push.defaut.vapid_private_key: ~

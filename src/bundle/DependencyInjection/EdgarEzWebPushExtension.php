@@ -16,7 +16,7 @@ class EdgarEzWebPushExtension extends Extension implements PrependExtensionInter
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('edgar_ez_web_push.manifest', $config['manifest'] ?? []);
+        $container->setParameter('edgar_ez_web_push.subject', $config['subject'] ?? null);
         $container->setParameter('edgar_ez_web_push.vapid_public_key', $config['vapid_public_key'] ?? null);
         $container->setParameter('edgar_ez_web_push.vapid_private_key', $config['vapid_private_key'] ?? null);
 

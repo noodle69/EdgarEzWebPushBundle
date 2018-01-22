@@ -114,7 +114,6 @@ class WebPushController extends Controller
         }
 
         $auth = [
-            'GCM' => 'AIzaSyDtECtKAcUDcxo7jwvHRocPSO2Nhtf46Dk',
             'VAPID' => [
                 'subject' => 'ezplatform.local',
                 'publicKey' => 'BKNY4s9LGtKS5xhQSDSffrCqWe2htqggyGMJHtSP4Yh4kdBSreiNfL8u+a4Uj2W5as0YPNdrGoSIoezBlPNpZRw=',

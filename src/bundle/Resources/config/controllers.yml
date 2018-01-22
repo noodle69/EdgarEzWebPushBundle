@@ -6,17 +6,8 @@ services:
 
     Edgar\EzWebPushBundle\Controller\:
         resource: "../../Controller/*"
-        exclude: "../../Controller/ServerController.php"
         public: true
         tags: ['controller.service_arguments']
         calls:
             - [setContainer, ["@service_container"]]
             - [performAccessCheck, []]
-
-    Edgar\EzWebPushBundle\Controller\ServerController:
-        public: true
-        tags: ['controller.service_arguments']
-        arguments:
-            $manifest: '%edgar_ez_web_push.manifest%'
-        calls:
-            - [setContainer, ["@service_container"]]
