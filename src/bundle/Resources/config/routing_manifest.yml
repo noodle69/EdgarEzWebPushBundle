@@ -1,4 +1,0 @@
-edgar.ezwebpush.manifest:
-    path: /manifest
-    defaults:
-        _controller: 'EdgarEzWebPushBundle:Server:manifest'

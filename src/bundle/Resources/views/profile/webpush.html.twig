@@ -8,6 +8,12 @@
 {% endblock %}
 
 {% block profilecontent %}
-    <button id="subscriptionButton" data-vapidpublickey="{{ vapid_public_key }}">Subscribe!</button>
+    <button id="subscriptionButton"
+        data-vapidpublickey="{{ vapid_public_key }}"
+        data-register="{{ path('edgar.ezwebpush.register') }}"
+        data-unregister="{{ path('edgar.ezwebpush.unregister') }}"
+    >
+        Subscribe!
+    </button>
 {% endblock %}
 

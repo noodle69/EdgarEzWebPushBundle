@@ -1,10 +1,10 @@
 edgar.ezwebpush.profile:
-    path: /webpush/profile
+    path: /webpush
     defaults:
         _controller: 'EdgarEzWebPushBundle:WebPush:profile'
 
 edgar.ezwebpush.sw:
-    path: /sw
+    path: /_sw
     defaults:
         _controller: 'EdgarEzWebPushBundle:WebPush:sw'
 

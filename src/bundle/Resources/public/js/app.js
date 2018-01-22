@@ -45,7 +45,7 @@ function subscribe() {
         });
     }).then(function(subscription) {
         console.log('Subscribed', subscription.endpoint);
-        return fetch('/admin/webpush/register', {
+        return fetch(subscriptionButton.getAttribute('data-register'), {
             method: 'post',
             mode: 'cors',
             credentials: 'include',
@@ -81,7 +81,7 @@ function unsubscribe() {
         return subscription.unsubscribe()
             .then(function() {
                 console.log('Unsubscribed', subscription.endpoint);
-                return fetch('/admin/webpush/unregister', {
+                return fetch(subscriptionButton.getAttribute('data-unregister'), {
                     method: 'post',
                     mode: 'cors',
                     credentials: 'include',
