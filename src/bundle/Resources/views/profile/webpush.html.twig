@@ -1,19 +1,35 @@
 {% extends "@EdgarEzUIProfile/profile/view.html.twig" %}
 
+{% trans_default_domain 'edgarezwebpush' %}
+
 {% block body_class %}ez-info-view{% endblock %}
 
 {% block subtitle %}
-    {% set subtitle = 'Manage your notifications'|trans %}
+    {% set subtitle = 'Notifications'|trans %}
     {{ parent() }}
 {% endblock %}
 
 {% block profilecontent %}
-    <button id="subscriptionButton"
-        data-vapidpublickey="{{ vapid_public_key }}"
-        data-register="{{ path('edgar.ezwebpush.register') }}"
-        data-unregister="{{ path('edgar.ezwebpush.unregister') }}"
-    >
-        Subscribe!
-    </button>
+
+    <p>
+        {% trans %}
+            Click on the button below to subscribe or unscribe to web push notifications
+        {% endtrans %}
+    </p>
+
+    <span class="input-group-btn">
+        <button id="webpush-subscriptionButton" class="btn btn-primary"
+            data-vapidpublickey="{{ vapid_public_key }}"
+            data-register="{{ path('edgar.ezwebpush.register') }}"
+            data-unregister="{{ path('edgar.ezwebpush.unregister') }}"
+        >
+            <span id="webpush-subscriptionButton-register">
+                {{ 'webpush.subscribe'|trans|desc('Subscribe') }}
+            </span>
+            <span id="webpush-subscriptionButton-unregister" style="display:none">
+                {{ 'webpush.unsubscribe'|trans|desc('Unsubscribe') }}
+            </span>
+        </button>
+    </span>
 {% endblock %}
 

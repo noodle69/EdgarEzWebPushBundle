@@ -18,9 +18,7 @@ self.processMessage = payload => {
 // Listen to `push` notification event. Define the text to be displayed
 // and show the notification.
 self.addEventListener('push', event => {
-    console.log('SW received push event', event);
     const pushMessageData = event.data;
-console.log(pushMessageData);
     const payload = pushMessageData ? pushMessageData.text() : undefined;
     event.waitUntil(self.processMessage(payload));
 });
@@ -31,11 +29,9 @@ console.log(pushMessageData);
 // in the server by sending a POST request with endpoint. Real world
 // application would probably use also user identification.
 self.addEventListener('pushsubscriptionchange', function(event) {
-    console.log('Subscription expired');
     event.waitUntil(
         self.registration.pushManager.subscribe({ userVisibleOnly: true })
             .then(function(subscription) {
-                console.log('Subscribed after expiration', subscription.endpoint);
                 return fetch('register', {
                     method: 'post',
                     headers: {

@@ -21,7 +21,7 @@ class ProfileConfigureMenuListener implements TranslationContainerInterface
             self::ITEM_PROFILE_WEBPUSH,
             [
                 'route' => 'edgar.ezwebpush.profile',
-                'extras' => ['icon' => 'pin'],
+                'extras' => ['icon' => 'subscriber'],
             ]
         );
     }
@@ -32,7 +32,7 @@ class ProfileConfigureMenuListener implements TranslationContainerInterface
     public static function getTranslationMessages(): array
     {
         return [
-            (new Message(self::ITEM_PROFILE_WEBPUSH, 'messages'))->setDesc('My notifications'),
+            (new Message(self::ITEM_PROFILE_WEBPUSH, 'messages'))->setDesc('Notifications'),
         ];
     }
 }
