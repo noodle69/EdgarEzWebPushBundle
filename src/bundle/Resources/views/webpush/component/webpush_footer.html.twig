@@ -1,3 +1,5 @@
+{{ render(controller('EdgarEzWebPushBundle:WebPush:modal', {})) }}
+
 <input type="hidden" id="serviceWorker" value="{{ path('edgar.ezwebpush.sw') }}"/>
 
 {%  javascripts

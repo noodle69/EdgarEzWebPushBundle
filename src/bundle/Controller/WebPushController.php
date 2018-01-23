@@ -2,7 +2,11 @@
 
 namespace Edgar\EzWebPushBundle\Controller;
 
+use Edgar\EzWebPush\Data\EdgarEzWebPushMessage;
+use Edgar\EzWebPush\Form\Factory\FormFactory;
+use Edgar\EzWebPush\Form\SubmitHandler;
 use Edgar\EzWebPush\Model\Message\Notification;
+use Edgar\EzWebPushBundle\Service\WebPushService;
 use EzSystems\EzPlatformAdminUiBundle\Controller\Controller;
 use Minishlink\WebPush\WebPush;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,9 +18,16 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Edgar\EzWebPushBundle\Entity\EdgarEzWebPushEndpoint;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use eZ\Publish\API\Repository\Values\User\User as APIUser;
 
 class WebPushController extends Controller
 {
+    /** @var FormFactory  */
+    protected $formFactory;
+
+    /** @var SubmitHandler  */
+    protected $submitHandler;
+
     /** @var \Doctrine\Common\Persistence\ObjectRepository  */
     private $webPushRepository;
 
@@ -26,13 +37,22 @@ class WebPushController extends Controller
     /** @var RouterInterface  */
     private $router;
 
+    /** @var WebPushService  */
+    private $webPushService;
+
     public function __construct(
+        FormFactory $formFactory,
+        SubmitHandler $submitHandler,
         Registry $doctrineRegistry,
         TokenStorage $tokenStorage,
-        RouterInterface $router
+        RouterInterface $router,
+        WebPushService $webPushService
     ) {
+        $this->formFactory = $formFactory;
+        $this->submitHandler = $submitHandler;
         $this->tokenStorage = $tokenStorage;
         $this->router = $router;
+        $this->webPushService = $webPushService;
 
         $entityManager = $doctrineRegistry->getManager();
         $this->webPushRepository = $entityManager->getRepository(EdgarEzWebPushEndpoint::class);
@@ -147,5 +167,53 @@ class WebPushController extends Controller
         $webPush->flush();
 
         return new RedirectResponse($this->router->generate('edgar.ezwebpush.profile'));
+    }
+
+    public function modalAction(): Response
+    {
+        $formMessage = $this->formFactory->sendMessage(new EdgarEzWebPushMessage());
+
+        return $this->render('@EdgarEzWebPush/webpush/modal_webpush.html.twig', [
+            'form_message' => $formMessage->createView()
+        ]);
+    }
+
+    public function messageAction(Request $request): Response
+    {
+        /** @var User $user */
+        $user = $this->tokenStorage->getToken()->getUser();
+        $apiUser = $user->getAPIUser();
+
+        $form = $this->formFactory->sendMessage(
+            new EdgarEzWebPushMessage()
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $result = $this->submitHandler->handle($form, $apiUser, function (EdgarEzWebPushMessage $data, APIUser $apiUser) {
+
+
+                return new RedirectResponse($this->generateUrl('_ezpublishLocation', [
+                    'locationId' => $data->getLocationId(),
+                ]));
+            });
+
+            if ($result instanceof Response) {
+                return $result;
+            }
+        }
+
+        $locationId = $request->request->get('location_id', null);
+        try {
+            $this->webPushService->hasLocationAccess($locationId);
+            return new RedirectResponse($this->generateUrl('_ezpublishLocation', [
+                'locationId' => $locationId,
+            ]));
+        } catch (WebPushException $e) {
+            $this->notificationHandler->error(
+                $e->getMessage()
+            );
+            return new RedirectResponse($this->generateUrl('ezplatform.dashboard', []));
+        }
     }
 }

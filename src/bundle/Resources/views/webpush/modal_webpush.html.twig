@@ -1,0 +1,29 @@
+{% form_theme form_message '@EzPlatformAdminUi/form_fields.html.twig' %}
+
+<div class="modal fade ez-modal ez-modal--webpush" id="webpush-location-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {{ form_start(form_message, {'action': path('edgar.ezwebpush.message')}) }}
+            <div class="modal-body">
+                <p class="ez-modal-body__main">
+                    {{ 'webpush.modal.message.intro'|trans|desc('Enter an user identifier to send this location with notification.') }}
+                </p>
+                {{ form_row(form_message.user_identifier) }}
+                {{ form_row(form_message.message) }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn--no" data-dismiss="modal">
+                    {{ 'webpush.form.cancel'|trans|desc('Cancel') }}
+                </button>
+                {{ form_widget(form_message.send, {'attr': {'class': 'btn-danger'}}) }}
+                {{ form_widget(form_message.locationId, {'value': ezpublish.requestStack.parentRequest.attributes.get('locationId')}) }}
+            </div>
+            {{ form_end(form_message) }}
+        </div>
+    </div>
+</div>

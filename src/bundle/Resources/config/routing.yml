@@ -22,3 +22,9 @@ edgar.ezwebpush.test:
     path: /webpush/test
     defaults:
         _controller: 'EdgarEzWebPushBundle:WebPush:test'
+
+edgar.ezwebpush.message:
+    path: /bookmark/message
+    methods: [ "POST" ]
+    defaults:
+        _controller: 'EdgarEzWebPushBundle:WebPush:message'
