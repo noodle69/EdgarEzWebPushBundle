@@ -43,7 +43,7 @@ class SubmitHandler
 
         if ($form->isValid()) {
             try {
-                $result = $handler($data);
+                $result = $handler($data, $user);
 
                 if ($result instanceof Response) {
                     return $result;

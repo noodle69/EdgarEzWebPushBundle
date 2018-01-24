@@ -9,24 +9,49 @@
       <trans-unit id="033d54f255d21bbb7fd6ffd6633a06473fd57da8" resname="            Click on the button below to subscribe or unscribe to web push notifications&#10;        ">
         <source xml:space="preserve">            Click on the button below to subscribe or unscribe to web push notifications
         </source>
-        <target xml:space="preserve" state="new">            Click on the button below to subscribe or unscribe to web push notifications
+        <target xml:space="preserve">            Click on the button below to subscribe or unscribe to web push notifications
         </target>
         <note>key:             Click on the button below to subscribe or unscribe to web push notifications
         </note>
       </trans-unit>
       <trans-unit id="753a22b2eb617204efee4644795034b8ace1ee14" resname="Notifications">
         <source>Notifications</source>
-        <target state="new">Notifications</target>
+        <target>Notifications</target>
         <note>key: Notifications</note>
+      </trans-unit>
+      <trans-unit id="5aa1772fa9c833825f072a22d6893e55c08a7630" resname="edgar.ezwebpush.exception.contact_no_subscribed">
+        <source>Your contact has not subscribed to notification</source>
+        <target>Your contact has not subscribed to notification</target>
+        <note>key: edgar.ezwebpush.exception.contact_no_subscribed</note>
+      </trans-unit>
+      <trans-unit id="3676b4ba6a19149a7c9ad9cc5f5fd947cf8b9dde" resname="edgar.ezwebpush.exception.location : %message%">
+        <source>Error on location : %message%</source>
+        <target>Error on location : %message%</target>
+        <note>key: edgar.ezwebpush.exception.location : %message%</note>
+      </trans-unit>
+      <trans-unit id="e6d938a2472e01a656f30fbb0ab7be090d7737db" resname="edgar.ezwebpush.exception.no_contact">
+        <source>No contact identified</source>
+        <target>No contact identified</target>
+        <note>key: edgar.ezwebpush.exception.no_contact</note>
+      </trans-unit>
+      <trans-unit id="2643e571a9feb605fdd79dd5c47b204a7e644082" resname="edgar.ezwebpush.exception.no_location">
+        <source>No location identified</source>
+        <target>No location identified</target>
+        <note>key: edgar.ezwebpush.exception.no_location</note>
+      </trans-unit>
+      <trans-unit id="ed6111d4c611b0f1c90bf480b992be414e90006f" resname="edgar.ezwebpush.message_sended">
+        <source>edgar.ezwebpush.message_sended</source>
+        <target state="new">Notification sended</target>
+        <note>key: edgar.ezwebpush.message_sended</note>
       </trans-unit>
       <trans-unit id="264718fb67f2cbca7a88f7ff7df5d91c1948102a" resname="webpush.subscribe">
         <source>Subscribe</source>
-        <target state="new">Subscribe</target>
+        <target>Subscribe</target>
         <note>key: webpush.subscribe</note>
       </trans-unit>
       <trans-unit id="129a51a4f1f71363186823fcf83a458541e6eecf" resname="webpush.unsubscribe">
         <source>Unsubscribe</source>
-        <target state="new">Unsubscribe</target>
+        <target>Unsubscribe</target>
         <note>key: webpush.unsubscribe</note>
       </trans-unit>
     </body>

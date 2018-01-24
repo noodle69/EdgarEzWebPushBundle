@@ -12,3 +12,17 @@ services:
         public: true
         tags:
           - { name: kernel.event_listener, event: edgar_ezuiprofile.menu_configure.profile_sidebar_left, method: onMenuConfigure }
+
+    Edgar\EzWebPushBundle\EventListener\ConfigureMenuListener:
+        public: true
+        tags:
+          - { name: kernel.event_listener, event: ezplatform_admin_ui.menu_configure.content_sidebar_right, method: onMenuConfigure }
+
+    Edgar\EzWebPush\Notification\WebPushNotificationHandler: ~
+
+    Edgar\EzWebPushBundle\Service\WebPushService:
+        public: true
+        arguments:
+            $subject: '%edgar_ez_web_push.subject%'
+            $privateKey: '%edgar_ez_web_push.vapid_private_key%'
+            $publicKey: '%edgar_ez_web_push.vapid_public_key%'

@@ -5,10 +5,10 @@ namespace Edgar\EzWebPushBundle\Controller;
 use Edgar\EzWebPush\Data\EdgarEzWebPushMessage;
 use Edgar\EzWebPush\Form\Factory\FormFactory;
 use Edgar\EzWebPush\Form\SubmitHandler;
-use Edgar\EzWebPush\Model\Message\Notification;
+use Edgar\EzWebPushBundle\Exception\WebPushException;
 use Edgar\EzWebPushBundle\Service\WebPushService;
+use EzSystems\EzPlatformAdminUi\Notification\NotificationHandlerInterface;
 use EzSystems\EzPlatformAdminUiBundle\Controller\Controller;
-use Minishlink\WebPush\WebPush;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +19,7 @@ use Edgar\EzWebPushBundle\Entity\EdgarEzWebPushEndpoint;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use eZ\Publish\API\Repository\Values\User\User as APIUser;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class WebPushController extends Controller
 {
@@ -37,6 +38,12 @@ class WebPushController extends Controller
     /** @var RouterInterface  */
     private $router;
 
+    /** @var NotificationHandlerInterface  */
+    private $notificationHandler;
+
+    /** @var TranslatorInterface  */
+    private $translator;
+
     /** @var WebPushService  */
     private $webPushService;
 
@@ -46,12 +53,16 @@ class WebPushController extends Controller
         Registry $doctrineRegistry,
         TokenStorage $tokenStorage,
         RouterInterface $router,
+        NotificationHandlerInterface $notificationHandler,
+        TranslatorInterface $translator,
         WebPushService $webPushService
     ) {
         $this->formFactory = $formFactory;
         $this->submitHandler = $submitHandler;
         $this->tokenStorage = $tokenStorage;
         $this->router = $router;
+        $this->notificationHandler = $notificationHandler;
+        $this->translator = $translator;
         $this->webPushService = $webPushService;
 
         $entityManager = $doctrineRegistry->getManager();
@@ -125,50 +136,6 @@ class WebPushController extends Controller
         return $response;
     }
 
-    public function testAction(): Response
-    {
-        $webPushEndpoints = $this->webPushRepository->findAll();
-
-        if (!$webPushEndpoints || count($webPushEndpoints) == 0) {
-            return new RedirectResponse($this->router->generate('edgar.ezuibookmark.profile'));
-        }
-
-        $auth = [
-            'VAPID' => [
-                'subject' => 'ezplatform.local',
-                'publicKey' => 'BKNY4s9LGtKS5xhQSDSffrCqWe2htqggyGMJHtSP4Yh4kdBSreiNfL8u+a4Uj2W5as0YPNdrGoSIoezBlPNpZRw=',
-                'privateKey' => '2jTTbzmqWVSxMzpKa1iUNqyVcpPJ33/M08DK9/SFzpQ=',
-            ],
-        ];
-
-        $webPush = new WebPush($auth);
-
-        $notification = new Notification([
-            'title' => 'Awesome title',
-            'body'  => 'Symfony is great!',
-            'icon'  => 'https://symfony.com/logos/symfony_black_03.png',
-            'data'  => [
-                'link' => 'https://www.symfony.com',
-            ],
-        ]);
-
-        foreach ($webPushEndpoints as $webPushEndpoint) {
-            try {
-                $res = $webPush->sendNotification(
-                    $webPushEndpoint->getEndpoint(),
-                    $notification,
-                    $webPushEndpoint->getPublicKey(),
-                    $webPushEndpoint->getAuthToken()
-                );
-            } catch (\ErrorException $e) {
-            }
-        }
-
-        $webPush->flush();
-
-        return new RedirectResponse($this->router->generate('edgar.ezwebpush.profile'));
-    }
-
     public function modalAction(): Response
     {
         $formMessage = $this->formFactory->sendMessage(new EdgarEzWebPushMessage());
@@ -191,7 +158,23 @@ class WebPushController extends Controller
 
         if ($form->isSubmitted()) {
             $result = $this->submitHandler->handle($form, $apiUser, function (EdgarEzWebPushMessage $data, APIUser $apiUser) {
+                $title = $apiUser->getName();
+                $message = $data->getMessage();
 
+                try {
+                    $toUser = $this->webPushService->getUserByLogin($data->getUserIdentifier());
+                    $this->webPushService->sendLocationNotificationToUser($apiUser->id, $toUser->id, $title, $message);
+
+                    $this->translator->trans(
+                        'edgar.ezwebpush.message_sended',
+                        [],
+                        'edgarezwebpush'
+                    );
+                } catch (WebPushException $e) {
+                    $this->notificationHandler->error(
+                        $e->getMessage()
+                    );
+                }
 
                 return new RedirectResponse($this->generateUrl('_ezpublishLocation', [
                     'locationId' => $data->getLocationId(),

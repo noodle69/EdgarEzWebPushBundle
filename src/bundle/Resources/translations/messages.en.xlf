@@ -6,10 +6,30 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
+      <trans-unit id="d824e36fc4b1ad05fb65775493cc7b66435f780c" resname="content__sidebar_right__webpush">
+        <source>Notify</source>
+        <target>Notify</target>
+        <note>key: content__sidebar_right__webpush</note>
+      </trans-unit>
+      <trans-unit id="c87fa89a1909e8deca01cd0e02f2ba37cf93175e" resname="message_form.send">
+        <source>Send</source>
+        <target>Send</target>
+        <note>key: message_form.send</note>
+      </trans-unit>
       <trans-unit id="d2590127cd209801be05af5b6a0083c1888ff445" resname="profile__webpush">
         <source>Notifications</source>
         <target>Notifications</target>
         <note>key: profile__webpush</note>
+      </trans-unit>
+      <trans-unit id="64f81c64b67b149db2e98b476d5722832d9c1524" resname="webpush.form.cancel">
+        <source>Cancel</source>
+        <target>Cancel</target>
+        <note>key: webpush.form.cancel</note>
+      </trans-unit>
+      <trans-unit id="5769a637f47966ed3578123249824f919ebbe1a6" resname="webpush.modal.message.intro">
+        <source>Enter an user identifier to send this location with notification.</source>
+        <target>Enter an user identifier to send this location with notification.</target>
+        <note>key: webpush.modal.message.intro</note>
       </trans-unit>
     </body>
   </file>
