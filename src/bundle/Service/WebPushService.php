@@ -17,6 +17,7 @@ use eZ\Publish\API\Repository\Values\User\User;
 use eZ\Publish\Core\MVC\Exception\SourceImageNotFoundException;
 use eZ\Publish\SPI\Variation\VariationHandler;
 use Symfony\Component\Asset\Packages;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use eZ\Publish\SPI\Variation\Values\Variation;
 
@@ -46,6 +47,9 @@ class WebPushService
     /** @var Packages  */
     private $packages;
 
+    /** @var UrlGeneratorInterface  */
+    private $generator;
+
     public function __construct(
         string $subject,
         string $privateKey,
@@ -56,7 +60,8 @@ class WebPushService
         NotificationHandlerInterface $notificationHandler,
         TranslatorInterface $translator,
         VariationHandler $imageVariationService,
-        Packages $packages
+        Packages $packages,
+        UrlGeneratorInterface $generator
     ) {
         $this->auth = [
             'VAPID' => [
@@ -75,6 +80,7 @@ class WebPushService
         $this->translator = $translator;
         $this->imageVariationService = $imageVariationService;
         $this->packages = $packages;
+        $this->generator = $generator;
     }
 
     /**
@@ -88,7 +94,8 @@ class WebPushService
         int $fromUserId,
         int $toUserId,
         string $title,
-        string $message
+        string $message,
+        int $locationId
     ) {
         $webPushEndpoints = $this->webPushRepository->findBy(['userId' => $toUserId]);
         if (!$webPushEndpoints || count($webPushEndpoints) == 0) {
@@ -108,10 +115,16 @@ class WebPushService
             throw new WebPushException($e->getMessage());
         }
 
+        $location = $this->locationService->loadLocation($locationId);
+        $url = $this->generator->generate('ez_urlalias', ['locationId' => $location->id], UrlGeneratorInterface::ABSOLUTE_URL);
+
         $notification = new Notification([
             'title' => $title,
             'body'  => $message,
-            'icon'  => $this->getUserAvatar($fromUser)
+            'icon'  => $this->getUserAvatar($fromUser),
+            'data' => [
+                'url' => $url,
+            ]
         ]);
 
         foreach ($webPushEndpoints as $webPushEndpoint) {

@@ -158,12 +158,16 @@ class WebPushController extends Controller
 
         if ($form->isSubmitted()) {
             $result = $this->submitHandler->handle($form, $apiUser, function (EdgarEzWebPushMessage $data, APIUser $apiUser) {
-                $title = $apiUser->getName();
+                $title = $this->translator->trans(
+                    'edgar.ezwebpush.message.from %fromUser%',
+                    ['%fromUser%' => $apiUser->getName()],
+                    'edgarezwebpush'
+                );
                 $message = $data->getMessage();
 
                 try {
                     $toUser = $this->webPushService->getUserByLogin($data->getUserIdentifier());
-                    $this->webPushService->sendLocationNotificationToUser($apiUser->id, $toUser->id, $title, $message);
+                    $this->webPushService->sendLocationNotificationToUser($apiUser->id, $toUser->id, $title, $message, $data->getLocationId());
 
                     $this->translator->trans(
                         'edgar.ezwebpush.message_sended',

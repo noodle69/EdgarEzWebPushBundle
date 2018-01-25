@@ -44,3 +44,16 @@ self.addEventListener('pushsubscriptionchange', function(event) {
             })
     );
 });
+
+self.addEventListener('notificationclick', function(e) {
+    var notification = e.notification;
+    var url = notification.data.url;
+    var action = e.action;
+
+    if (action === 'close') {
+        notification.close();
+    } else {
+        clients.openWindow(url);
+        notification.close();
+    }
+});
