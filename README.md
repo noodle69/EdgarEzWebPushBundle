@@ -12,4 +12,3 @@ eZ Platform web push notification
 
 [Installation](docs/INSTALL.md)
 
-[Usage](docs/USAGE.md)
