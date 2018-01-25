@@ -63,7 +63,7 @@ in app/config.yml, add :
 
 ```yaml
 edgar_ez_web_push:
-    subject: '%edgar_ez_web_push.subject%' # Your email
+    subject: '%edgar_ez_web_push.subject%' # Your host
     vapid_public_key: '%edgar_ez_web_push.vapid_public_key%' # A VAPID public key
     vapid_private_key: '%edgar_ez_web_push.vapid_private_key%' # A VAPID private key
 ```
