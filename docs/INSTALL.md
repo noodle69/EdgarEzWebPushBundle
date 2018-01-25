@@ -53,7 +53,25 @@ edgar.ezwebpush:
     defaults:
         siteaccess_group_whitelist: 'admin_group'
 
-edgar.ezwebpush.js:
-    resource: '@EdgarEzWebPushBundle/Resources/config/routing_manifest.yml'
-    prefix: /_webpush    
+edgar.ezwebpush.sw:
+    resource: '@EdgarEzWebPushBundle/Resources/config/routing_sw.yml'    
+```
+
+## Add config
+
+in app/config.yml, add :
+
+```yaml
+edgar_ez_web_push:
+    subject: '%edgar_ez_web_push.subject%' # Your email
+    vapid_public_key: '%edgar_ez_web_push.vapid_public_key%' # A VAPID public key
+    vapid_private_key: '%edgar_ez_web_push.vapid_private_key%' # A VAPID private key
+```
+
+## Generate VAPID keys
+
+Use this command and report keys to your config
+
+```
+php bin/console edgar:webpush:vapidkeys
 ```
