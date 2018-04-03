@@ -19,10 +19,10 @@
   },
   "require": {
     "php": ">=7.1",
-    "ezsystems/ezpublish-kernel": "^7.0",
-    "ezsystems/ezplatform-admin-ui": "^1.0",
+    "ezsystems/ezpublish-kernel": "^7.1",
+    "ezsystems/ezplatform-admin-ui": "^1.1",
     "edgar/ez-uiprofile-bundle": "~2.0",
-    "minishlink/web-push": "~2.0"
+    "minishlink/web-push": "~4.0"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "~2.7.1",
