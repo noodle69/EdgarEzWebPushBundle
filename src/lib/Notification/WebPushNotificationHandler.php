@@ -5,6 +5,7 @@ namespace Edgar\EzWebPush\Notification;
 use Edgar\EzWebPush\Model\Message\Notification;
 use Edgar\EzWebPushBundle\Entity\EdgarEzWebPushEndpoint;
 use Edgar\EzWebPushBundle\Exception\WebPushException;
+use Minishlink\WebPush\Subscription;
 use Minishlink\WebPush\WebPush;
 
 class WebPushNotificationHandler implements NotificationHandlerInterface
@@ -12,9 +13,16 @@ class WebPushNotificationHandler implements NotificationHandlerInterface
     /** @var WebPush  */
     private $webPush;
 
+    /**
+     * WebPushNotificationHandler constructor.
+     */
     public function __construct()
     {
-        $this->webPush = new WebPush();
+        try {
+            $this->webPush = new WebPush();
+        } catch (\ErrorException $e) {
+            $this->webPush = false;
+        }
     }
 
     /**
@@ -26,22 +34,33 @@ class WebPushNotificationHandler implements NotificationHandlerInterface
      */
     public function sendMessage(array $auth, EdgarEzWebPushEndpoint $webPushEndpoint, Notification $notification, bool $flush = false)
     {
-        $this->webPush = new WebPush($auth);
-
         try {
-            $this->webPush->sendNotification(
+            $this->webPush = new WebPush($auth);
+
+            $subscription = new Subscription(
                 $webPushEndpoint->getEndpoint(),
-                $notification,
                 $webPushEndpoint->getPublicKey(),
                 $webPushEndpoint->getAuthToken()
+            );
+
+            $this->webPush->sendNotification(
+                $subscription,
+                $notification
             );
         } catch (\ErrorException $e) {
             throw new WebPushException($e->getMessage());
         }
     }
 
+    /**
+     * @return bool
+     */
     public function flush()
     {
-        $this->webPush->flush();
+        try {
+            return $this->webPush->flush();
+        } catch (\ErrorException $e) {
+            return false;
+        }
     }
 }
