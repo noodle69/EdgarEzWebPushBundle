@@ -18,6 +18,13 @@ services:
         tags:
           - { name: kernel.event_listener, event: ezplatform_admin_ui.menu_configure.content_sidebar_right, method: onMenuConfigure }
 
+    Edgar\EzWebPushBundle\EventListener\SWListener:
+        public: true
+        arguments:
+            $fragmentPath: "%fragment.path%"
+        tags:
+            - { name: kernel.event_subscriber }
+
     Edgar\EzWebPush\Notification\WebPushNotificationHandler: ~
 
     Edgar\EzWebPushBundle\Service\WebPushService:

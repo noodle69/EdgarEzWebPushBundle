@@ -1,20 +1,20 @@
 edgar.ezwebpush.profile:
-    path: /webpush
+    path: /
     defaults:
         _controller: 'EdgarEzWebPushBundle:WebPush:profile'
 
 edgar.ezwebpush.register:
-    path: /webpush/register
+    path: /register
     defaults:
         _controller: 'EdgarEzWebPushBundle:WebPush:register'
 
 edgar.ezwebpush.unregister:
-    path: /webpush/unregister
+    path: /unregister
     defaults:
         _controller: 'EdgarEzWebPushBundle:WebPush:unregister'
 
 edgar.ezwebpush.message:
-    path: /bookmark/message
+    path: /message
     methods: [ "POST" ]
     defaults:
         _controller: 'EdgarEzWebPushBundle:WebPush:message'

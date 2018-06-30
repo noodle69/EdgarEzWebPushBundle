@@ -76,16 +76,6 @@ class WebPushController extends Controller
         ]);
     }
 
-    public function swAction(): Response
-    {
-        $response = new Response();
-        $path = $this->get('kernel')->getRootDir() . '/../web/bundles/edgarezwebpush/js/service-worker.js';
-        $response->setContent(file_get_contents($path));
-        $response->headers->set('Content-Type', 'application/javascript');
-
-        return $response;
-    }
-
     public function registerAction(Request $request): Response
     {
         /** @var User $user */

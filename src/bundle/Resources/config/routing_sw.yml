@@ -1,4 +1,4 @@
 edgar.ezwebpush.sw:
     path: /_sw
     defaults:
-        _controller: 'EdgarEzWebPushBundle:WebPush:sw'
+        _controller: 'EdgarEzWebPushBundle:WebPushSW:sw'

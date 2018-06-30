@@ -17,7 +17,7 @@ use eZ\Publish\API\Repository\Values\User\User;
 use eZ\Publish\Core\MVC\Exception\SourceImageNotFoundException;
 use eZ\Publish\SPI\Variation\VariationHandler;
 use Symfony\Component\Asset\Packages;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use eZ\Publish\SPI\Variation\Values\Variation;
 
@@ -47,8 +47,8 @@ class WebPushService
     /** @var Packages  */
     private $packages;
 
-    /** @var UrlGeneratorInterface  */
-    private $generator;
+    /** @var RouterInterface */
+    private $router;
 
     public function __construct(
         string $subject,
@@ -61,7 +61,7 @@ class WebPushService
         TranslatorInterface $translator,
         VariationHandler $imageVariationService,
         Packages $packages,
-        UrlGeneratorInterface $generator
+        RouterInterface $router
     ) {
         $this->auth = [
             'VAPID' => [
@@ -80,16 +80,9 @@ class WebPushService
         $this->translator = $translator;
         $this->imageVariationService = $imageVariationService;
         $this->packages = $packages;
-        $this->generator = $generator;
+        $this->router = $router;
     }
 
-    /**
-     * @param int $fromUserId
-     * @param int $toUserId
-     * @param string $title
-     * @param string $message
-     * @throws WebPushException
-     */
     public function sendLocationNotificationToUser(
         int $fromUserId,
         int $toUserId,
@@ -116,7 +109,7 @@ class WebPushService
         }
 
         $location = $this->locationService->loadLocation($locationId);
-        $url = $this->generator->generate('ez_urlalias', ['locationId' => $location->id], UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $this->router->generate('_ezpublishLocation', ['locationId' => $locationId]);
 
         $notification = new Notification([
             'title' => $title,
@@ -218,8 +211,11 @@ class WebPushService
         $versionInfo = $user->getVersionInfo();
 
         try {
-            /** @var Variation $variation */
-            $variation = $this->imageVariationService->getVariation($field, $versionInfo, $variationName);
+            $variation = false;
+            if ($field->value->id) {
+                /** @var Variation $variation */
+                $variation = $this->imageVariationService->getVariation($field, $versionInfo, $variationName);
+            }
 
             $imageUri = $variation ? $variation->uri : 'bundles/ezplatformadminui/img/default-profile-picture.png';
             return $this->packages->getUrl($imageUri);

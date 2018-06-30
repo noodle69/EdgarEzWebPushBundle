@@ -4,8 +4,9 @@ services:
         autoconfigure: true
         public: false
 
-    Edgar\EzWebPushBundle\Controller\:
-        resource: "../../Controller/*"
+    Edgar\EzWebPushBundle\Controller\WebPushSWController: ~
+
+    Edgar\EzWebPushBundle\Controller\WebPushController:
         public: true
         tags: ['controller.service_arguments']
         calls:
