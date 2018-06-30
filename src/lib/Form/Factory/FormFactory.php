@@ -1,11 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Emmanuel
- * Date: 23/01/2018
- * Time: 22:12
- */
 
+/**
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
 namespace Edgar\EzWebPush\Form\Factory;
 
 use Edgar\EzWebPush\Data\EdgarEzWebPushMessage;

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
 namespace Edgar\EzWebPushBundle\Service;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
@@ -23,28 +27,28 @@ use eZ\Publish\SPI\Variation\Values\Variation;
 
 class WebPushService
 {
-    /** @var array  */
+    /** @var array */
     private $auth;
 
-    /** @var EdgarEzWebPushEndpointRepository  */
+    /** @var EdgarEzWebPushEndpointRepository */
     private $webPushRepository;
 
-    /** @var UserService  */
+    /** @var UserService */
     private $userService;
 
-    /** @var LocationService  */
+    /** @var LocationService */
     private $locationService;
 
-    /** @var NotificationHandlerInterface  */
+    /** @var NotificationHandlerInterface */
     private $notificationHandler;
 
-    /** @var TranslatorInterface  */
+    /** @var TranslatorInterface */
     private $translator;
 
-    /** @var VariationHandler  */
+    /** @var VariationHandler */
     private $imageVariationService;
 
-    /** @var Packages  */
+    /** @var Packages */
     private $packages;
 
     /** @var RouterInterface */
@@ -67,7 +71,7 @@ class WebPushService
             'VAPID' => [
                 'subject' => $subject,
                 'publicKey' => $publicKey,
-                'privateKey' => $privateKey
+                'privateKey' => $privateKey,
             ],
         ];
 
@@ -113,11 +117,11 @@ class WebPushService
 
         $notification = new Notification([
             'title' => $title,
-            'body'  => $message,
-            'icon'  => $this->getUserAvatar($fromUser),
+            'body' => $message,
+            'icon' => $this->getUserAvatar($fromUser),
             'data' => [
                 'url' => $url,
-            ]
+            ],
         ]);
 
         foreach ($webPushEndpoints as $webPushEndpoint) {
@@ -133,13 +137,16 @@ class WebPushService
 
     /**
      * @param int $userId
+     *
      * @return User
+     *
      * @throws WebPushException
      */
     public function getUser(int $userId): User
     {
         try {
             $user = $this->userService->loadUser($userId);
+
             return $user;
         } catch (NotFoundException $e) {
             throw new WebPushException(
@@ -154,13 +161,16 @@ class WebPushService
 
     /**
      * @param string $userLogin
+     *
      * @return User
+     *
      * @throws WebPushException
      */
     public function getUserByLogin(string $userLogin): User
     {
         try {
             $user = $this->userService->loadUserByLogin($userLogin);
+
             return $user;
         } catch (NotFoundException $e) {
             throw new WebPushException(
@@ -175,7 +185,9 @@ class WebPushService
 
     /**
      * @param int|null $locationId
+     *
      * @return bool
+     *
      * @throws WebPushException
      */
     public function hasLocationAccess(?int $locationId): bool
@@ -218,6 +230,7 @@ class WebPushService
             }
 
             $imageUri = $variation ? $variation->uri : 'bundles/ezplatformadminui/img/default-profile-picture.png';
+
             return $this->packages->getUrl($imageUri);
         } catch (InvalidVariationException $e) {
             if (isset($this->logger)) {
@@ -238,6 +251,7 @@ class WebPushService
         }
 
         $imageUri = 'bundles/ezplatformadminui/img/default-profile-picture.png';
+
         return $this->packages->getUrl($imageUri);
     }
 }

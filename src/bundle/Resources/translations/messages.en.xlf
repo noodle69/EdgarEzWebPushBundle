@@ -21,6 +21,11 @@
         <target>Notifications</target>
         <note>key: profile__webpush</note>
       </trans-unit>
+      <trans-unit id="29807cb1f5247c2264608116517dfca51f993f39" resname="profile__webpush_description">
+        <source>Activate WebPush to receive user or application browser notifications</source>
+        <target state="new">Activate WebPush to receive user or application browser notifications</target>
+        <note>key: profile__webpush_description</note>
+      </trans-unit>
       <trans-unit id="64f81c64b67b149db2e98b476d5722832d9c1524" resname="webpush.form.cancel">
         <source>Cancel</source>
         <target>Cancel</target>

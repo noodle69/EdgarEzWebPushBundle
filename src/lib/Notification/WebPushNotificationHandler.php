@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
 namespace Edgar\EzWebPush\Notification;
 
 use Edgar\EzWebPush\Model\Message\Notification;
@@ -10,7 +14,7 @@ use Minishlink\WebPush\WebPush;
 
 class WebPushNotificationHandler implements NotificationHandlerInterface
 {
-    /** @var WebPush  */
+    /** @var WebPush */
     private $webPush;
 
     /**
@@ -30,6 +34,7 @@ class WebPushNotificationHandler implements NotificationHandlerInterface
      * @param EdgarEzWebPushEndpoint $webPushEndpoint
      * @param Notification $notification
      * @param bool $flush
+     *
      * @throws WebPushException
      */
     public function sendMessage(array $auth, EdgarEzWebPushEndpoint $webPushEndpoint, Notification $notification, bool $flush = false)

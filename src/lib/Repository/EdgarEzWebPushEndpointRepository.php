@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
 namespace Edgar\EzWebPush\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -18,6 +22,7 @@ class EdgarEzWebPushEndpointRepository extends EntityRepository
             $webPushEndpoint->setPublicKey($publicKey);
             $this->getEntityManager()->persist($webPushEndpoint);
             $this->getEntityManager()->flush();
+
             return true;
         } catch (ORMException $e) {
             return false;
@@ -38,6 +43,7 @@ class EdgarEzWebPushEndpointRepository extends EntityRepository
 
             $this->getEntityManager()->remove($webPushEndpoint);
             $this->getEntityManager()->flush();
+
             return true;
         } catch (ORMException $e) {
             return false;

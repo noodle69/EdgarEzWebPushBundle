@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
 namespace Edgar\EzWebPush\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -24,7 +28,7 @@ class MessageType extends AbstractType
                 'required' => true,
             ])
             ->add('send', SubmitType::class, [
-                'label' => /** @Desc("Send") */ 'message_form.send'
+                'label' => /** @Desc("Send") */ 'message_form.send',
             ]);
     }
 

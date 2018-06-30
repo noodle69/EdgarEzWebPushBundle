@@ -1,14 +1,17 @@
 <?php
 
+/**
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
 namespace Edgar\EzWebPush\Model\Message;
 
 class Notification implements JsonPayloadInterface, \ArrayAccess
 {
-
     private $data = [];
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function __construct(array $data = [])
     {
@@ -16,7 +19,7 @@ class Notification implements JsonPayloadInterface, \ArrayAccess
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function jsonSerialize(): array
     {
@@ -24,7 +27,7 @@ class Notification implements JsonPayloadInterface, \ArrayAccess
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function __toString(): string
     {
@@ -32,7 +35,7 @@ class Notification implements JsonPayloadInterface, \ArrayAccess
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function offsetExists($offset)
     {
@@ -40,7 +43,7 @@ class Notification implements JsonPayloadInterface, \ArrayAccess
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function offsetGet($offset)
     {
@@ -48,7 +51,7 @@ class Notification implements JsonPayloadInterface, \ArrayAccess
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function offsetSet($offset, $value)
     {
@@ -56,7 +59,7 @@ class Notification implements JsonPayloadInterface, \ArrayAccess
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function offsetUnset($offset)
     {

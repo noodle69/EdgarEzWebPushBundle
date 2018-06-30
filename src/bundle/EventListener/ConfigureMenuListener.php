@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
 namespace Edgar\EzWebPushBundle\EventListener;
 
 use EzSystems\EzPlatformAdminUi\Menu\Event\ConfigureMenuEvent;
@@ -20,7 +24,9 @@ class ConfigureMenuListener implements TranslationContainerInterface
         $menu->addChild(
             self::ITEM_WEBPUSH,
             [
-                'extras' => ['icon' => 'subscriber'],
+                'extras' => [
+                    'icon' => 'subscriber',
+                ],
                 'attributes' => [
                     'data-toggle' => 'modal',
                     'data-target' => '#webpush-location-modal',

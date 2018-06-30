@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
 namespace Edgar\EzWebPushBundle\Controller;
 
 use Edgar\EzWebPush\Data\EdgarEzWebPushMessage;
@@ -23,28 +27,28 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class WebPushController extends Controller
 {
-    /** @var FormFactory  */
+    /** @var FormFactory */
     protected $formFactory;
 
-    /** @var SubmitHandler  */
+    /** @var SubmitHandler */
     protected $submitHandler;
 
-    /** @var \Doctrine\Common\Persistence\ObjectRepository  */
+    /** @var \Doctrine\Common\Persistence\ObjectRepository */
     private $webPushRepository;
 
     /** @var TokenStorage $tokenStorage */
     private $tokenStorage;
 
-    /** @var RouterInterface  */
+    /** @var RouterInterface */
     private $router;
 
-    /** @var NotificationHandlerInterface  */
+    /** @var NotificationHandlerInterface */
     private $notificationHandler;
 
-    /** @var TranslatorInterface  */
+    /** @var TranslatorInterface */
     private $translator;
 
-    /** @var WebPushService  */
+    /** @var WebPushService */
     private $webPushService;
 
     public function __construct(
@@ -85,6 +89,7 @@ class WebPushController extends Controller
         $content = json_decode($request->getContent(), true);
         if (JSON_ERROR_NONE !== json_last_error()) {
             $response = new JsonResponse(['success' => false]);
+
             return $response;
         }
 
@@ -93,15 +98,18 @@ class WebPushController extends Controller
             || !isset($content['keys']['p256dh'])
         ) {
             $response = new JsonResponse(['success' => false]);
+
             return $response;
         }
 
         if (!$this->webPushRepository->save($apiUser->id, $content['endpoint'], $content['keys']['auth'], $content['keys']['p256dh'])) {
             $response = new JsonResponse(['success' => false]);
+
             return $response;
         }
 
         $response = new JsonResponse(['success' => true]);
+
         return $response;
     }
 
@@ -114,15 +122,18 @@ class WebPushController extends Controller
         $content = json_decode($request->getContent());
         if (!isset($content->endpoint)) {
             $response = new JsonResponse(['success' => false]);
+
             return $response;
         }
 
         if (!$this->webPushRepository->delete($apiUser->id, $content->endpoint)) {
             $response = new JsonResponse(['success' => false]);
+
             return $response;
         }
 
         $response = new JsonResponse(['success' => true]);
+
         return $response;
     }
 
@@ -131,7 +142,7 @@ class WebPushController extends Controller
         $formMessage = $this->formFactory->sendMessage(new EdgarEzWebPushMessage());
 
         return $this->render('@EdgarEzWebPush/webpush/modal_webpush.html.twig', [
-            'form_message' => $formMessage->createView()
+            'form_message' => $formMessage->createView(),
         ]);
     }
 
@@ -159,10 +170,12 @@ class WebPushController extends Controller
                     $toUser = $this->webPushService->getUserByLogin($data->getUserIdentifier());
                     $this->webPushService->sendLocationNotificationToUser($apiUser->id, $toUser->id, $title, $message, $data->getLocationId());
 
-                    $this->translator->trans(
-                        'edgar.ezwebpush.message_sended',
-                        [],
-                        'edgarezwebpush'
+                    $this->notificationHandler->success(
+                        $this->translator->trans(
+                            'edgar.ezwebpush.message_sended',
+                            [],
+                            'edgarezwebpush'
+                        )
                     );
                 } catch (WebPushException $e) {
                     $this->notificationHandler->error(
@@ -183,6 +196,7 @@ class WebPushController extends Controller
         $locationId = $request->request->get('location_id', null);
         try {
             $this->webPushService->hasLocationAccess($locationId);
+
             return new RedirectResponse($this->generateUrl('_ezpublishLocation', [
                 'locationId' => $locationId,
             ]));
@@ -190,6 +204,7 @@ class WebPushController extends Controller
             $this->notificationHandler->error(
                 $e->getMessage()
             );
+
             return new RedirectResponse($this->generateUrl('ezplatform.dashboard', []));
         }
     }

@@ -40,8 +40,8 @@
         <note>key: edgar.ezwebpush.exception.no_location</note>
       </trans-unit>
       <trans-unit id="76e2b958050b37e846789f4a082b54379f25298a" resname="edgar.ezwebpush.message.from %fromUser%">
-        <source>edgar.ezwebpush.message.from %fromUser%</source>
-        <target state="new">Notification from %fromUser%</target>
+        <source>Notification from %fromUser%</source>
+        <target>Notification from %fromUser%</target>
         <note>key: edgar.ezwebpush.message.from %fromUser%</note>
       </trans-unit>
       <trans-unit id="ed6111d4c611b0f1c90bf480b992be414e90006f" resname="edgar.ezwebpush.message_sended">
