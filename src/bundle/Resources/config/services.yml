@@ -33,3 +33,4 @@ services:
             $subject: '%edgar_ez_web_push.subject%'
             $privateKey: '%edgar_ez_web_push.vapid_private_key%'
             $publicKey: '%edgar_ez_web_push.vapid_public_key%'
+            $imageVariationService: '@ezpublish.image_alias.imagine.variation.imagine_alias_generator'
